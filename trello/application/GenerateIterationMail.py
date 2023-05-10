@@ -5,9 +5,10 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 
 class GenerateIterationMail:
 
-    def __init__(self, trello_api: TrelloApi, board_id: str):
+    def __init__(self, trello_api: TrelloApi, board_id: str, name: str):
         self.trello_api = trello_api
         self.board_id = board_id
+        self.name = name
 
     def get_iteration_cards(self) -> [TrelloCard]:
         trello_lists = self.trello_api.get_lists_from(board_id=self.board_id)
@@ -22,11 +23,11 @@ class GenerateIterationMail:
             autoescape=select_autoescape(['html', 'xml'])
         )
 
-        template = env.get_template('iteration_mail.html')
+        template = env.get_template('iteration_mail.txt')
 
         rendered_email = template.render(
             {
-                "name": "cristiano",
+                "name": self.name,
                 "cards": cards
             }
         )
