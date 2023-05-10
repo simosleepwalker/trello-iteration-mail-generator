@@ -1,5 +1,6 @@
 import os
 
+from trello.application.GenerateIterationMail import GenerateIterationMail
 from trello.infrastracture.TrelloApi import TrelloApi
 from dotenv import load_dotenv
 
@@ -11,4 +12,5 @@ TRELLO_BOARD_ID = os.getenv('TRELLO_BOARD_ID')
 
 if __name__ == '__main__':
     trelloApi = TrelloApi(API_KEY, API_TOKEN)
-    lists = trelloApi.get_lists_from(TRELLO_BOARD_ID)
+    genMail = GenerateIterationMail(trelloApi, TRELLO_BOARD_ID)
+    print(genMail.generate_email())
