@@ -1,0 +1,7 @@
+Ciao {{name}},
+come abbiamo verificato, l'iterazione {{iteration_number}} è stata chiusa con successo con i seguenti task:
+{% for card in cards %}
+    - {{card.name}}
+{% endfor %}
+Ti chiedo conferma come di consueto.
+Grazie.
