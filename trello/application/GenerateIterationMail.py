@@ -1,3 +1,4 @@
+from trello.application.GetAndUpdateSequence import GetAndUpdateSequence
 from trello.domain.TrelloCard import TrelloCard
 from trello.infrastracture.TrelloApi import TrelloApi
 from jinja2 import Environment, PackageLoader, select_autoescape
@@ -9,6 +10,7 @@ class GenerateIterationMail:
         self.trello_api = trello_api
         self.board_id = board_id
         self.name = name
+        self.iteration_number = GetAndUpdateSequence().get_and_update()
 
     def get_iteration_cards(self) -> [TrelloCard]:
         trello_lists = self.trello_api.get_lists_from(board_id=self.board_id)
@@ -28,8 +30,11 @@ class GenerateIterationMail:
         rendered_email = template.render(
             {
                 "name": self.name,
-                "cards": cards
+                "cards": cards,
+                "iteration_number": self.iteration_number
             }
         )
+
+
 
         return rendered_email
