@@ -17,3 +17,5 @@ have the iteration cards in that list in your Project Board.
 The first iteration will be generated with number 1, after that, a file named `iteration_seq.seq` will be generated,
 from there you can put the correct iteration number.
 This file will be updated for every correct execution of the script.
+
+At this time, the mail is generated only in italian language.
