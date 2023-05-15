@@ -10,7 +10,6 @@ class GenerateIterationMail:
         self.trello_api = trello_api
         self.board_id = board_id
         self.name = name
-        self.iteration_number = GetAndUpdateSequence().get_and_update()
 
     def get_iteration_cards(self) -> [TrelloCard]:
         trello_lists = self.trello_api.get_lists_from(board_id=self.board_id)
@@ -31,10 +30,8 @@ class GenerateIterationMail:
             {
                 "name": self.name,
                 "cards": cards,
-                "iteration_number": self.iteration_number
+                "iteration_number": GetAndUpdateSequence().get_and_update()
             }
         )
-
-
 
         return rendered_email

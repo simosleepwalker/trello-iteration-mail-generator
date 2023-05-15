@@ -1,6 +1,7 @@
 import json
 
 import requests as requests
+from requests import Request
 
 from trello.domain.TrelloBoard import TrelloBoard
 from trello.domain.TrelloCard import TrelloCard
@@ -23,26 +24,15 @@ class TrelloApi:
     def get_board(self, board_id: str) -> TrelloBoard:
         url = str.format("https://api.trello.com/1/boards/{}", board_id)
 
-        response = requests.request(
-            "GET",
-            url,
-            headers=self.headers,
-            params=self.parameters
-        )
+        response = self.__make_request__("GET", url)
 
         result = json.loads(response.text)
-
         return TrelloBoard(result["id"], result["name"])
 
     def get_lists_from(self, board_id: str) -> [TrelloList]:
         url = str.format("https://api.trello.com/1/boards/{}/lists", board_id)
 
-        response = requests.request(
-            "GET",
-            url,
-            headers=self.headers,
-            params=self.parameters
-        )
+        response = self.__make_request__("GET", url)
 
         result = json.loads(response.text)
         trello_lists = []
@@ -55,12 +45,7 @@ class TrelloApi:
     def get_list(self, list_id: str) -> TrelloList:
         url = str.format("https://api.trello.com/1/lists/{}", list_id)
 
-        response = requests.request(
-            "GET",
-            url,
-            headers=self.headers,
-            params=self.parameters
-        )
+        response = self.__make_request__("GET", url)
 
         result = json.loads(response.text)
 
@@ -69,12 +54,7 @@ class TrelloApi:
     def get_cards_from(self, list_id: str) -> [TrelloCard]:
         url = str.format("https://api.trello.com/1/lists/{}/cards", list_id)
 
-        response = requests.request(
-            "GET",
-            url,
-            headers=self.headers,
-            params=self.parameters
-        )
+        response = self.__make_request__("GET", url)
 
         result = json.loads(response.text)
         trello_cards = []
@@ -83,3 +63,16 @@ class TrelloApi:
             trello_cards.append(TrelloCard(res["id"], res["idList"], res["name"]))
 
         return trello_cards
+
+    def __make_request__(self, method: str, url: str):
+        response = requests.request(
+            "GET",
+            url,
+            headers=self.headers,
+            params=self.parameters
+        )
+
+        if response.status_code != 200:
+            raise Exception(str.format('Error making request at url {}', url))
+
+        return response
