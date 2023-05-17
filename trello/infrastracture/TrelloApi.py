@@ -1,7 +1,6 @@
 import json
 
 import requests as requests
-from requests import Request
 
 from trello.domain.TrelloBoard import TrelloBoard
 from trello.domain.TrelloCard import TrelloCard
@@ -66,7 +65,7 @@ class TrelloApi:
 
     def __make_request__(self, method: str, url: str):
         response = requests.request(
-            "GET",
+            method,
             url,
             headers=self.headers,
             params=self.parameters
